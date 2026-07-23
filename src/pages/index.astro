@@ -43,27 +43,31 @@ const paths = [
       <a class="primary-action" href="#solutions">开始找答案 <span aria-hidden="true">↘</span></a>
     </div>
 
-    <div class="hero-art" aria-label="小车有解品牌图形">
-      <span class="shape shape-one"></span>
-      <span class="shape shape-two"></span>
-      <div class="mark-stage">
-        <img src="/brand/mark-black.png" width="256" height="135" alt="小车有解品牌符号" />
+    <div class="hero-art" aria-label="小车有解品牌生活主视觉">
+      <img class="hero-photo" src="/brand/brand-life-hero.webp" width="1024" height="1536" alt="晨光中的橙色托特包、车钥匙、织物和植物组成的小车生活静物" />
+      <div class="hero-mark">
+        <img src="/brand/mark-black.png" width="256" height="135" alt="" />
       </div>
-      <p>普通小车，也值得被认真设计</p>
+      <p>把日常，开成喜欢的样子</p>
     </div>
   </section>
 
   <section class="mood-strip" aria-label="品牌价值">
     <div class="mood-track">
-      <span>好看一点</span><i></i><span>顺手一点</span><i></i><span>生活更有样</span><i></i><span>每一处都有理由</span>
+      <div class="mood-group">
+        <span>好看一点</span><i></i><span>顺手一点</span><i></i><span>生活更有样</span><i></i><span>每一处都有理由</span><i></i>
+      </div>
+      <div class="mood-group" aria-hidden="true">
+        <span>好看一点</span><i></i><span>顺手一点</span><i></i><span>生活更有样</span><i></i><span>每一处都有理由</span><i></i>
+      </div>
     </div>
   </section>
 
   <section id="solutions" class="section shell path-section" aria-labelledby="paths-title">
     <div class="section-heading">
       <span class="eyebrow">从喜欢开始</span>
-      <h2 id="paths-title">不是堆配件，<br />是重新想一遍生活。</h2>
-      <p>先看见想要的样子，再把每一个细节做实。</p>
+      <h2 id="paths-title">你的小车，<br />想先好一点在哪里？</h2>
+      <p>先看见想要的样子，再把每一个细节做实。手机上可以左右滑动。</p>
     </div>
 
     <div class="path-list">
@@ -109,7 +113,7 @@ const paths = [
       <h2 id="proof-title">好看可以先发生，<br />但可信要慢慢建立。</h2>
     </div>
 
-    <ol class="proof-flow">
+    <ol class="proof-flow" tabindex="0" aria-label="内容验证状态，可左右滑动">
       <li class="is-current"><span>01</span><strong>概念方案</strong><small>表达方向，尚未证明可安装</small></li>
       <li><span>02</span><strong>资料研究</strong><small>已有可靠资料，仍待实车验证</small></li>
       <li><span>03</span><strong>实车测量</strong><small>关键尺寸已经现场确认</small></li>

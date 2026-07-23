@@ -39,7 +39,7 @@ npm run dev
 
 ```bash
 npm run validate   # Astro 类型检查 + 生产构建
-npm run smoke      # 真实 Chrome 手机视口、导航、图片、样例页与溢出检查
+npm run smoke      # 真实 Chrome 手机视口、导航、图片、样例页、溢出与 axe 无障碍检查
 npm run capture    # 生成手机端与桌面端验收截图
 ```
 
