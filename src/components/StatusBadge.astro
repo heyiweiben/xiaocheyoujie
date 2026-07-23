@@ -1,0 +1,17 @@
+---
+interface Props {
+  status: 'concept' | 'researched' | 'measured' | 'installed' | 'verified';
+}
+
+const labels = {
+  concept: '概念方案',
+  researched: '资料研究',
+  measured: '实车测量',
+  installed: '已安装',
+  verified: '长期验证',
+};
+
+const { status } = Astro.props;
+---
+
+<span class:list={['status-badge', `status-${status}`]}>{labels[status]}</span>

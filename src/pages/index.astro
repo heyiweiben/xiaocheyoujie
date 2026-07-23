@@ -1,0 +1,146 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import StatusBadge from '../components/StatusBadge.astro';
+
+const paths = [
+  {
+    number: '01',
+    eyebrow: '先找到喜欢的样子',
+    title: '小车生活方案',
+    text: '从颜色、比例、材料和生活场景出发，先把整套方案想清楚。',
+    href: '#a10',
+    tone: 'coral',
+  },
+  {
+    number: '02',
+    eyebrow: '再判断能不能落地',
+    title: '方案现实审查',
+    text: '产品、尺寸、安装、安全和法规，哪些可行，哪些还要验证。',
+    href: '#proof',
+    tone: 'cream',
+  },
+  {
+    number: '03',
+    eyebrow: '把结果留给下一次',
+    title: 'H 的真实记录',
+    text: '采购、安装、失败、返工和长期使用，不隐藏不顺利的部分。',
+    href: '#stories',
+    tone: 'teal',
+  },
+];
+---
+
+<BaseLayout>
+  <SiteHeader slot="header" />
+
+  <section class="hero shell" aria-labelledby="hero-title">
+    <div class="hero-copy">
+      <span class="kicker">小车生活设计</span>
+      <h1 id="hero-title">小车有解，<br /><em>生活有样。</em></h1>
+      <p class="hero-lead">研究普通小车怎么变得更好看、更好用、更适合真实生活。</p>
+      <a class="primary-action" href="#solutions">开始找答案 <span aria-hidden="true">↘</span></a>
+    </div>
+
+    <div class="hero-art" aria-label="小车有解品牌图形">
+      <span class="shape shape-one"></span>
+      <span class="shape shape-two"></span>
+      <div class="mark-stage">
+        <img src="/brand/mark-black.png" width="256" height="135" alt="小车有解品牌符号" />
+      </div>
+      <p>普通小车，也值得被认真设计</p>
+    </div>
+  </section>
+
+  <section class="mood-strip" aria-label="品牌价值">
+    <div class="mood-track">
+      <span>好看一点</span><i></i><span>顺手一点</span><i></i><span>生活更有样</span><i></i><span>每一处都有理由</span>
+    </div>
+  </section>
+
+  <section id="solutions" class="section shell path-section" aria-labelledby="paths-title">
+    <div class="section-heading">
+      <span class="eyebrow">从喜欢开始</span>
+      <h2 id="paths-title">不是堆配件，<br />是重新想一遍生活。</h2>
+      <p>先看见想要的样子，再把每一个细节做实。</p>
+    </div>
+
+    <div class="path-list">
+      {paths.map((path) => (
+        <a class:list={['path-card', `path-${path.tone}`]} href={path.href}>
+          <span class="path-number">{path.number}</span>
+          <span class="path-eyebrow">{path.eyebrow}</span>
+          <h3>{path.title}</h3>
+          <p>{path.text}</p>
+          <span class="path-arrow" aria-hidden="true">↗</span>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <section id="a10" class="section feature-section">
+    <div class="shell feature-grid">
+      <div class="feature-image-wrap">
+        <img src="/images/a10/city-departure.webp" width="1200" height="1600" alt="苔原绿零跑 A10 城市出发概念方案" loading="lazy" />
+        <div class="image-stamp">当前切口 · A10</div>
+      </div>
+
+      <div class="feature-copy">
+        <div class="feature-meta">
+          <StatusBadge status="concept" />
+          <span>小车生活方案</span>
+        </div>
+        <h2>从一台小车出发，<br />但不止研究这一台车。</h2>
+        <p>零跑 A10 是我们正在认真研究的第一台车。这里先展示生活想象，再把尺寸、产品和落地条件一项项补齐。</p>
+        <ul class="feature-points">
+          <li><span>01</span> 先看整体气质，不急着加配件</li>
+          <li><span>02</span> 概念与实装分开标注</li>
+          <li><span>03</span> 给普通人留一个能靠近的入口</li>
+        </ul>
+        <a class="text-link" href="/solutions/a10-city-departure/">查看这份方案 <span aria-hidden="true">→</span></a>
+      </div>
+    </div>
+  </section>
+
+  <section id="proof" class="section proof-section shell" aria-labelledby="proof-title">
+    <div class="section-heading compact">
+      <span class="eyebrow">答案走到哪一步</span>
+      <h2 id="proof-title">好看可以先发生，<br />但可信要慢慢建立。</h2>
+    </div>
+
+    <ol class="proof-flow">
+      <li class="is-current"><span>01</span><strong>概念方案</strong><small>表达方向，尚未证明可安装</small></li>
+      <li><span>02</span><strong>资料研究</strong><small>已有可靠资料，仍待实车验证</small></li>
+      <li><span>03</span><strong>实车测量</strong><small>关键尺寸已经现场确认</small></li>
+      <li><span>04</span><strong>已安装</strong><small>记录真实安装与使用过程</small></li>
+      <li><span>05</span><strong>长期验证</strong><small>经过持续使用和复盘</small></li>
+    </ol>
+  </section>
+
+  <section id="stories" class="section note-section">
+    <div class="shell note-grid">
+      <div>
+        <span class="eyebrow light">真实记录</span>
+        <h2>可以不完美，<br />但过程要是真的。</h2>
+      </div>
+      <div class="note-copy">
+        <p>采购过什么、装起来哪里不顺、为什么返工、用久了有什么变化，都会成为下一版方案的依据。</p>
+        <span class="coming-label">栏目正在准备中</span>
+      </div>
+    </div>
+  </section>
+
+  <section id="about" class="section about-section shell">
+    <div class="about-mark">
+      <img src="/brand/mark-black.png" width="220" height="116" alt="" loading="lazy" />
+    </div>
+    <div class="about-copy">
+      <span class="eyebrow">关于 H</span>
+      <h2>一个认真研究<br />小车生活的普通车主。</h2>
+      <p>不假装什么都有答案。先把问题看清楚，再用设计、产品和真实使用，一点点找答案。</p>
+    </div>
+  </section>
+
+  <SiteFooter slot="footer" />
+</BaseLayout>

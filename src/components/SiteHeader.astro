@@ -1,0 +1,29 @@
+---
+const links = [
+  { href: '/#solutions', label: '找方案' },
+  { href: '/#proof', label: '看验证' },
+  { href: '/#stories', label: '真实记录' },
+  { href: '/#a10', label: 'A10 专题' },
+];
+---
+
+<header class="site-header">
+  <div class="header-inner shell">
+    <a class="brand-link" href="/" aria-label="小车有解首页">
+      <img src="/brand/logo-color.png" width="150" height="73" alt="小车有解，认真研究小车，用心设计生活" />
+    </a>
+
+    <nav class="desktop-nav" aria-label="主导航">
+      {links.map((link) => <a href={link.href}>{link.label}</a>)}
+      <a class="nav-about" href="/#about">关于 H</a>
+    </nav>
+
+    <details class="mobile-menu">
+      <summary aria-label="打开导航"><span></span><span></span></summary>
+      <nav aria-label="手机导航">
+        {links.map((link) => <a href={link.href}>{link.label}</a>)}
+        <a href="/#about">关于 H</a>
+      </nav>
+    </details>
+  </div>
+</header>

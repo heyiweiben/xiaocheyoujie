@@ -1,0 +1,34 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import SiteHeader from '../../components/SiteHeader.astro';
+import SiteFooter from '../../components/SiteFooter.astro';
+import StatusBadge from '../../components/StatusBadge.astro';
+
+export async function getStaticPaths() {
+  const entries = await getCollection('solutions');
+  return entries.map((entry) => ({ params: { id: entry.id }, props: { entry } }));
+}
+
+interface Props { entry: CollectionEntry<'solutions'>; }
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+const title = `${entry.data.title}｜小车有解`;
+---
+
+<BaseLayout title={title} description={entry.data.summary} image={entry.data.image}>
+  <SiteHeader slot="header" />
+  <article class="article-shell">
+    <a class="article-back" href="/">← 返回首页</a>
+    <header class="article-head">
+      <StatusBadge status={entry.data.status} />
+      <h1>{entry.data.title}</h1>
+      <p class="article-summary">{entry.data.summary}</p>
+    </header>
+    <img class="article-hero" src={entry.data.image} alt={entry.data.imageAlt} width="1200" height="1600" />
+    {entry.data.prototype && <p class="prototype-note">本页为本地网站原型中的内容结构样例，公开文案尚未经过用户最终确认。</p>}
+    <div class="article-body"><Content /></div>
+  </article>
+  <SiteFooter slot="footer" />
+</BaseLayout>
