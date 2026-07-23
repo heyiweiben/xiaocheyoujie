@@ -203,6 +203,8 @@
   .footer-logo { width: 144px; height: auto; margin-bottom: 12px; }
   .site-footer p { color: var(--muted); font-size: .84rem; }
   .footer-note { display: grid; gap: 8px; }
+  .footer-action { min-height: 48px; display: inline-flex; align-items: center; gap: 10px; margin-bottom: 8px; color: var(--teal); font-weight: 700; }
+  .footer-action span { color: var(--coral-dark); }
 
   .article-shell { width: min(100% - 32px, 760px); margin-inline: auto; padding-block: 52px 90px; }
   .article-back { min-height: 48px; display: inline-flex; align-items: center; color: var(--teal); font-weight: 700; }
