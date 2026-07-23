@@ -30,8 +30,15 @@ const links = [
 
 <script>
   const menu = document.querySelector<HTMLDetailsElement>('.mobile-menu');
+  const summary = menu?.querySelector('summary');
+  const syncMenuLabel = () => summary?.setAttribute('aria-label', menu?.open ? '关闭导航' : '打开导航');
+
+  menu?.addEventListener('toggle', syncMenuLabel);
   menu?.querySelectorAll('a').forEach((link) => {
     link.addEventListener('click', () => menu.removeAttribute('open'));
+  });
+  document.addEventListener('pointerdown', (event) => {
+    if (menu?.open && !menu.contains(event.target as Node)) menu.removeAttribute('open');
   });
   document.addEventListener('keydown', (event) => {
     if (event.key === 'Escape') menu?.removeAttribute('open');

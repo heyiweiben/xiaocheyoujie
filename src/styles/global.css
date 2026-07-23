@@ -3,6 +3,7 @@
 @layer reset {
   *, *::before, *::after { box-sizing: border-box; }
   html { scroll-behavior: smooth; }
+  [id] { scroll-margin-top: 88px; }
   body, h1, h2, h3, p, ol, ul { margin: 0; }
   img { display: block; max-width: 100%; }
   a { color: inherit; text-decoration: none; }

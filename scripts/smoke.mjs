@@ -27,8 +27,15 @@ if (width.viewport !== width.document) throw new Error(`Horizontal overflow: ${J
 
 await page.locator('.mobile-menu summary').click();
 if (!(await page.locator('.mobile-menu nav').isVisible())) throw new Error('Mobile navigation did not open');
+await page.waitForFunction(() => document.querySelector('.mobile-menu summary')?.getAttribute('aria-label') === '关闭导航');
+await page.mouse.click(20, 200);
+if (await page.locator('.mobile-menu').evaluate((menu) => menu.hasAttribute('open'))) throw new Error('Mobile navigation did not close after outside click');
+await page.locator('.mobile-menu summary').click();
 await page.locator('.mobile-menu nav a').first().click();
 if (await page.locator('.mobile-menu').evaluate((menu) => menu.hasAttribute('open'))) throw new Error('Mobile navigation did not close after link click');
+await page.waitForTimeout(800);
+const solutionsTop = await page.locator('#solutions').evaluate((section) => section.getBoundingClientRect().top);
+if (solutionsTop < 69) throw new Error(`Anchor hidden by sticky header: ${solutionsTop}`);
 await page.locator('.mobile-menu summary').click();
 await page.keyboard.press('Escape');
 if (await page.locator('.mobile-menu').evaluate((menu) => menu.hasAttribute('open'))) throw new Error('Mobile navigation did not close on Escape');
