@@ -20,7 +20,17 @@ if (!home?.ok()) throw new Error(`Home returned ${home?.status()}`);
 
 const faviconHref = await page.locator('link[rel="icon"]').getAttribute('href');
 if (faviconHref !== '/favicon.png?v=2') throw new Error(`Square brand favicon missing: ${faviconHref}`);
-if (!(await page.locator('.brand-name').textContent())?.includes('小车有解')) throw new Error('Readable header brand name missing');
+const headerLogo = page.locator('.site-header .brand-lockup');
+if (await headerLogo.getAttribute('src') !== '/brand/xiaocheyoujie-horizontal-white-2048.png') throw new Error('Official horizontal brand lockup missing from header');
+if (await page.locator('.site-header .brand-mark, .site-header .brand-copy').count()) throw new Error('Hand-built header brand remains instead of official lockup');
+const publishedCards = page.locator('.published-solution-card');
+if (await publishedCards.count() !== 6) throw new Error(`Expected 6 published Xiaohongshu solutions, got ${await publishedCards.count()}`);
+const publishedText = await publishedCards.allInnerTexts();
+for (const title of ['魔教座驾', '敢去远方', '车顶箱和行李篮', '旅行车味', '有点心动', '上世纪的旅行车']) {
+  if (!publishedText.some((text) => text.includes(title))) throw new Error(`Published solution missing: ${title}`);
+}
+for (const card of await publishedCards.all()) await card.scrollIntoViewIfNeeded();
+await page.waitForFunction(() => [...document.querySelectorAll('.published-solution-card img')].every((image) => image.complete && image.naturalWidth > 0));
 const homeText = await page.locator('main').innerText();
 for (const forbidden of ['网站内容结构样例', '本地网站原型', '公开文案尚未经过用户最终确认', '获得证据后', '第一份内容先解决']) {
   if (homeText.includes(forbidden)) throw new Error(`Prototype wording leaked to homepage: ${forbidden}`);
@@ -38,8 +48,8 @@ const visualSystem = await page.evaluate(() => {
     h1AccentFont: style('h1 em').fontFamily,
     h2Font: style('h2').fontFamily,
     moodAnimation: style('.mood-track').animationName,
-    pathBackgrounds: [...document.querySelectorAll('.path-card')].map((card) => getComputedStyle(card).backgroundColor),
-    pathRadii: [...document.querySelectorAll('.path-card')].map((card) => getComputedStyle(card).borderRadius),
+    pathBackgrounds: [...document.querySelectorAll('.published-solution-card')].map((card) => getComputedStyle(card).backgroundColor),
+    pathRadii: [...document.querySelectorAll('.published-solution-card')].map((card) => getComputedStyle(card).borderRadius),
   };
 });
 if (new Set([visualSystem.bodyFont, visualSystem.h1Font, visualSystem.h1AccentFont, visualSystem.h2Font]).size !== 1) {
@@ -105,6 +115,7 @@ if ((await page.locator('html').getAttribute('lang')) !== 'en') throw new Error(
 if (!(await page.locator('h1').textContent())?.includes('Small Car')) throw new Error('English home title missing');
 if (!(await page.locator('a[href="mailto:xiaocheyoujie@proton.me"]').count())) throw new Error('English contact email missing');
 if (!(await page.locator('a[href="/"]').filter({ hasText: '中文' }).count())) throw new Error('Chinese language return missing');
+if (await page.locator('.published-solution-card').count() !== 6) throw new Error('English published-solution set is incomplete');
 const englishWidth = await page.evaluate(() => ({ viewport: innerWidth, document: document.documentElement.scrollWidth }));
 if (englishWidth.viewport !== englishWidth.document) throw new Error(`English horizontal overflow: ${JSON.stringify(englishWidth)}`);
 const englishA11y = await new AxeBuilder({ page }).analyze();

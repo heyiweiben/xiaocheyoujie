@@ -4,30 +4,42 @@ import SiteHeader from '../../components/SiteHeader.astro';
 import SiteFooter from '../../components/SiteFooter.astro';
 import StatusBadge from '../../components/StatusBadge.astro';
 
-const paths = [
+const publishedSolutions = [
   {
-    number: '01',
-    eyebrow: 'Shape the whole idea first',
-    title: 'Style & Exterior',
-    text: 'Start with colour, proportion, wheels and use cases—then decide what is worth changing and what should stay.',
-    href: '#a10',
-    tone: 'coral',
+    title: 'A10 in “Dark Iron” Wuxia Style',
+    text: 'A cinematic concept built from dark iron grey, vermilion accents and ink-inspired graphics.',
+    image: '/images/solutions/a10-night-wuxia.webp',
+    href: 'https://www.xiaohongshu.com/explore/6a61cc9d000000001b01d608',
   },
   {
-    number: '02',
-    eyebrow: 'Solve everyday friction',
-    title: 'Space & Everyday Gear',
-    text: 'Choose storage, loading and care solutions that fit the car and make daily use genuinely easier.',
-    href: '#proof',
-    tone: 'cream',
+    title: 'Can Such a Small A10 Go Far?',
+    text: 'A family road-trip concept exploring luggage, roof loading and the limits of a small car.',
+    image: '/images/solutions/a10-go-far.webp',
+    href: 'https://www.xiaohongshu.com/explore/6a60ec21000000001b01ea0f',
   },
   {
-    number: '03',
-    eyebrow: 'Verify in the real world',
-    title: 'Installation & Ownership Notes',
-    text: 'Product details, key dimensions, installation, cost and long-term use are kept separate from concept work.',
-    href: '#stories',
-    tone: 'teal',
+    title: 'Roof Box or Luggage Basket?',
+    text: 'Two low-profile roof systems compared on the same A10 for proportion, loading and daily character.',
+    image: '/images/solutions/a10-roof-box-vs-basket.webp',
+    href: 'https://www.xiaohongshu.com/explore/6a5e0d2200000000010300bd',
+  },
+  {
+    title: 'A Small Car with Estate-Car Character',
+    text: 'Retro auxiliary lamps, low-slung luggage and a complete side profile without losing everyday usability.',
+    image: '/images/solutions/a10-wagon-flavour.webp',
+    href: 'https://www.xiaohongshu.com/explore/6a5c1393000000000402aeb0',
+  },
+  {
+    title: 'Tundra Green Light-Camping A10',
+    text: 'A restrained light-camping direction that keeps the original green and works for commuting and weekends.',
+    image: '/images/solutions/a10-light-camping.webp',
+    href: 'https://www.xiaohongshu.com/explore/6a5a362c0000000001031461',
+  },
+  {
+    title: 'A10 as a Last-Century Estate Car',
+    text: 'A retro concept informed by classic estate-car proportions and small-car living.',
+    image: '/images/solutions/a10-old-century-wagon.webp',
+    href: 'https://www.xiaohongshu.com/explore/6a58a4ee000000000f01de07',
   },
 ];
 ---
@@ -64,20 +76,23 @@ const paths = [
 
   <section id="solutions" class="section shell path-section" aria-labelledby="paths-title">
     <div class="section-heading">
-      <span class="eyebrow">What we cover</span>
-      <h2 id="paths-title">Define the problem.<br />Then design the solution.</h2>
-      <p>Each proposal sets out its use case, practical boundaries and next action. Swipe horizontally on mobile.</p>
+      <span class="eyebrow">Published concepts</span>
+      <h2 id="paths-title">Real questions,<br />designed into small-car ideas.</h2>
+      <p>Six A10 concepts already published by Small Car, Solved on Xiaohongshu. Open a card to view the original post.</p>
     </div>
-    <div class="path-list">
-      {paths.map((path) => (
-        <a class:list={['path-card', `path-${path.tone}`]} href={path.href}>
-          <span class="path-number">{path.number}</span>
-          <span class="path-eyebrow">{path.eyebrow}</span>
-          <h3>{path.title}</h3>
-          <p>{path.text}</p>
-          <span class="path-arrow" aria-hidden="true">↗</span>
-        </a>
-      ))}
+
+    <div class="published-solutions-grid" tabindex="0" aria-label="Published concepts; swipe horizontally">
+    {publishedSolutions.map((solution) => (
+      <a class="published-solution-card" href={solution.href} target="_blank" rel="noreferrer">
+        <img src={solution.image} alt={solution.title} width="1086" height="1448" loading="lazy" />
+        <span class="published-solution-copy">
+          <small>Published on Xiaohongshu · Concept</small>
+          <strong>{solution.title}</strong>
+          <span>{solution.text}</span>
+        </span>
+        <span class="published-solution-arrow" aria-hidden="true">↗</span>
+      </a>
+    ))}
     </div>
   </section>
 

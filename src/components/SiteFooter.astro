@@ -8,8 +8,7 @@ const isEnglish = lang === 'en';
   <div class="shell footer-grid">
     <div>
       <a class="footer-brand" href={isEnglish ? '/en/' : '/'} aria-label={isEnglish ? 'Small Car, Solved home' : '小车有解首页'}>
-        <img src="/favicon.png?v=2" width="48" height="48" alt="" loading="lazy" />
-        <strong>小车有解</strong>
+        <img class="footer-lockup" src="/brand/xiaocheyoujie-horizontal-white-2048.png" width="2048" height="998" alt={isEnglish ? 'Small Car, Solved' : '小车有解｜认真研究小车，用心设计生活'} loading="lazy" />
       </a>
       <p>{isEnglish ? 'Better ideas for small-car living.' : '小车有解，生活有样。'}</p>
     </div>
