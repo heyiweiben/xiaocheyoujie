@@ -15,6 +15,7 @@ pnpm-debug.log*
 
 # local visual QA artifacts
 artifacts/
+draft/
 
 # environment variables
 .env

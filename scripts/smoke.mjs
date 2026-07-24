@@ -20,6 +20,15 @@ if (!home?.ok()) throw new Error(`Home returned ${home?.status()}`);
 
 const faviconHref = await page.locator('link[rel="icon"]').getAttribute('href');
 if (faviconHref !== '/favicon.png?v=2') throw new Error(`Square brand favicon missing: ${faviconHref}`);
+const heroPhoto = page.locator('.hero-photo');
+if (await heroPhoto.getAttribute('src') !== '/brand/brand-life-hero-phone.webp?v=1') throw new Error('Approved phone digital-key hero is not active');
+const heroAlt = await heroPhoto.getAttribute('alt');
+for (const phrase of ['手机屏幕', '纯电小车', '锁车图标', '电量状态']) {
+  if (!heroAlt?.includes(phrase)) throw new Error(`Chinese hero accessibility description missing: ${phrase}`);
+}
+await page.waitForFunction(() => { const image = document.querySelector('.hero-photo'); return image?.complete && image.naturalWidth === 1024 && image.naturalHeight === 1536; });
+const retiredHero = await page.request.get(`${baseURL}/brand/brand-life-hero.webp`);
+if (retiredHero.ok()) throw new Error('Retired traditional-key hero is still publicly deployed');
 const headerLogo = page.locator('.site-header .brand-lockup');
 if (await headerLogo.getAttribute('src') !== '/brand/xiaocheyoujie-horizontal-white-2048.png') throw new Error('Official horizontal brand lockup missing from header');
 if (await page.locator('.site-header .brand-mark, .site-header .brand-copy').count()) throw new Error('Hand-built header brand remains instead of official lockup');
@@ -133,6 +142,10 @@ if (!(await page.locator('h1').textContent())?.includes('Small Car')) throw new 
 if (!(await page.locator('a[href="mailto:xiaocheyoujie@proton.me"]').count())) throw new Error('English contact email missing');
 if (!(await page.locator('a[href="/"]').filter({ hasText: '中文' }).count())) throw new Error('Chinese language return missing');
 if (await page.locator('.published-solution-card').count() !== 6) throw new Error('English published-solution set is incomplete');
+const englishHeroAlt = await page.locator('.hero-photo').getAttribute('alt');
+for (const phrase of ['electric city car', 'lock icon', 'battery status']) {
+  if (!englishHeroAlt?.includes(phrase)) throw new Error(`English hero accessibility description missing: ${phrase}`);
+}
 const englishWidth = await page.evaluate(() => ({ viewport: innerWidth, document: document.documentElement.scrollWidth }));
 if (englishWidth.viewport !== englishWidth.document) throw new Error(`English horizontal overflow: ${JSON.stringify(englishWidth)}`);
 const englishA11y = await new AxeBuilder({ page }).analyze();
