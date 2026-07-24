@@ -31,6 +31,14 @@ for (const title of ['魔教座驾', '敢去远方', '车顶箱和行李篮', '�
 }
 for (const card of await publishedCards.all()) await card.scrollIntoViewIfNeeded();
 await page.waitForFunction(() => [...document.querySelectorAll('.published-solution-card img')].every((image) => image.complete && image.naturalWidth > 0));
+const mediaRatios = await page.locator('.published-solution-card img').evaluateAll((images) => images.map((image) => ({
+  src: image.getAttribute('src'),
+  natural: image.naturalWidth / image.naturalHeight,
+  rendered: image.getBoundingClientRect().width / image.getBoundingClientRect().height,
+})));
+for (const media of mediaRatios) {
+  if (Math.abs(media.natural - media.rendered) > 0.015) throw new Error(`Published artwork ratio changed: ${JSON.stringify(media)}`);
+}
 const homeText = await page.locator('main').innerText();
 for (const forbidden of ['网站内容结构样例', '本地网站原型', '公开文案尚未经过用户最终确认', '获得证据后', '第一份内容先解决']) {
   if (homeText.includes(forbidden)) throw new Error(`Prototype wording leaked to homepage: ${forbidden}`);
@@ -58,6 +66,15 @@ if (new Set([visualSystem.bodyFont, visualSystem.h1Font, visualSystem.h1AccentFo
 if (visualSystem.moodAnimation !== 'none') throw new Error('Decorative marquee still makes the page visually noisy');
 if (new Set(visualSystem.pathBackgrounds).size !== 1 || new Set(visualSystem.pathRadii).size !== 1) {
   throw new Error(`Solution cards do not share one visual system: ${JSON.stringify(visualSystem)}`);
+}
+const proofLayout = await page.locator('.proof-flow').evaluate((flow) => ({
+  scrollWidth: flow.scrollWidth,
+  clientWidth: flow.clientWidth,
+  itemHeights: [...flow.children].map((item) => item.getBoundingClientRect().height),
+  itemAlignments: [...flow.children].map((item) => getComputedStyle(item).alignContent),
+}));
+if (proofLayout.scrollWidth !== proofLayout.clientWidth || Math.max(...proofLayout.itemHeights) > 145 || proofLayout.itemAlignments.includes('end')) {
+  throw new Error(`Validation steps still resemble empty image cards: ${JSON.stringify(proofLayout)}`);
 }
 
 const homeA11y = await new AxeBuilder({ page }).analyze();
