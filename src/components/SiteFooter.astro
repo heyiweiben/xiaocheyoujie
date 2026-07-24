@@ -1,13 +1,23 @@
+---
+interface Props { lang?: 'zh' | 'en'; }
+const { lang = 'zh' } = Astro.props;
+const isEnglish = lang === 'en';
+---
+
 <footer class="site-footer">
   <div class="shell footer-grid">
     <div>
-      <img class="footer-logo" src="/brand/logo-color.png" width="176" height="86" alt="小车有解" loading="lazy" />
-      <p>小车有解，生活有样。</p>
+      <a class="footer-brand" href={isEnglish ? '/en/' : '/'} aria-label={isEnglish ? 'Small Car, Solved home' : '小车有解首页'}>
+        <img src="/favicon.png?v=2" width="48" height="48" alt="" loading="lazy" />
+        <strong>小车有解</strong>
+      </a>
+      <p>{isEnglish ? 'Better ideas for small-car living.' : '小车有解，生活有样。'}</p>
     </div>
     <div class="footer-note">
-      <a class="footer-action" href="/#solutions">再找一个小车问题 <span aria-hidden="true">↗</span></a>
-      <p>概念图、资料研究、实车测量与真实安装会明确标注。</p>
-      <p>© 2026 小车有解｜H</p>
+      <a class="footer-action" href={isEnglish ? '/en/#contact' : '/#contact'}>{isEnglish ? 'Contact us' : '联系我们'} <span aria-hidden="true">↗</span></a>
+      <a href="mailto:xiaocheyoujie@proton.me">xiaocheyoujie@proton.me</a>
+      <p>{isEnglish ? 'Concepts, research, measurements and real-world installations are clearly labelled.' : '概念方案、资料研究、实车测量与真实安装均明确标注。'}</p>
+      <p>© 2026 小车有解</p>
     </div>
   </div>
 </footer>

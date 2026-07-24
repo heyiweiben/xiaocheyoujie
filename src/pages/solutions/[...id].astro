@@ -17,7 +17,7 @@ const { Content } = await render(entry);
 const title = `${entry.data.title}｜小车有解`;
 ---
 
-<BaseLayout title={title} description={entry.data.summary} image={entry.data.image}>
+<BaseLayout title={title} description={entry.data.summary} image={entry.data.image} alternatePath="/en/solutions/a10-city-departure/">
   <SiteHeader slot="header" />
   <article class="article-shell">
     <a class="article-back" href="/">← 返回首页</a>
@@ -25,9 +25,9 @@ const title = `${entry.data.title}｜小车有解`;
       <StatusBadge status={entry.data.status} />
       <h1>{entry.data.title}</h1>
       <p class="article-summary">{entry.data.summary}</p>
+      {entry.data.status === 'concept' && <p class="article-status-note"><strong>当前状态：</strong>概念方案。内容用于说明设计方向，不代表配件已经适配或完成实车安装。</p>}
     </header>
     <img class="article-hero" src={entry.data.image} alt={entry.data.imageAlt} width="1200" height="1600" />
-    {entry.data.prototype && <p class="prototype-note">本页为本地网站原型中的内容结构样例，公开文案尚未经过用户最终确认。</p>}
     <div class="article-body"><Content /></div>
   </article>
   <SiteFooter slot="footer" />

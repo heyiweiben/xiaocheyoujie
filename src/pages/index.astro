@@ -7,48 +7,48 @@ import StatusBadge from '../components/StatusBadge.astro';
 const paths = [
   {
     number: '01',
-    eyebrow: '先找到喜欢的样子',
-    title: '小车生活方案',
-    text: '从颜色、比例、材料和生活场景出发，先把整套方案想清楚。',
+    eyebrow: '先决定整体方向',
+    title: '风格与外观方案',
+    text: '从车色、比例、轮毂和使用场景出发，先判断什么值得改、什么不必动。',
     href: '#a10',
     tone: 'coral',
   },
   {
     number: '02',
-    eyebrow: '再判断能不能落地',
-    title: '方案现实审查',
-    text: '产品、尺寸、安装、安全和法规，哪些可行，哪些还要验证。',
+    eyebrow: '再解决日常问题',
+    title: '空间与用品选择',
+    text: '围绕收纳、装载、清洁和上下车体验，寻找尺寸合适、真正顺手的用品。',
     href: '#proof',
     tone: 'cream',
   },
   {
     number: '03',
-    eyebrow: '把结果留给下一次',
-    title: 'H 的真实记录',
-    text: '采购、安装、失败、返工和长期使用，不隐藏不顺利的部分。',
+    eyebrow: '最后用事实验证',
+    title: '安装与长期记录',
+    text: '记录产品型号、关键尺寸、安装过程、花费和长期使用，不把概念当成结果。',
     href: '#stories',
     tone: 'teal',
   },
 ];
 ---
 
-<BaseLayout>
+<BaseLayout alternatePath="/en/">
   <SiteHeader slot="header" />
 
   <section class="hero shell" aria-labelledby="hero-title">
     <div class="hero-copy">
-      <span class="kicker">小车生活设计</span>
+      <span class="kicker">给普通小车的生活方案</span>
       <h1 id="hero-title">小车有解，<br /><em>生活有样。</em></h1>
-      <p class="hero-lead">研究普通小车怎么变得更好看、更好用、更适合真实生活。</p>
-      <a class="primary-action" href="#solutions">开始找答案 <span aria-hidden="true">↘</span></a>
+      <p class="hero-lead">不靠堆配件，也不只做效果图。我们从真实用车问题出发，把好看、好用和能落地放在一起研究。</p>
+      <a class="primary-action" href="#solutions">看看我们解决什么 <span aria-hidden="true">↘</span></a>
     </div>
 
     <div class="hero-art" aria-label="小车有解品牌生活主视觉">
       <img class="hero-photo" src="/brand/brand-life-hero.webp" width="1024" height="1536" alt="晨光中的橙色托特包、车钥匙、织物和植物组成的小车生活静物" />
       <div class="hero-mark">
-        <img src="/brand/mark-black.png" width="256" height="135" alt="" />
+        <img src="/favicon.png?v=2" width="128" height="128" alt="" />
       </div>
-      <p>把日常，开成喜欢的样子</p>
+      <p>把每天都在开的车，变成更顺手的生活空间</p>
     </div>
   </section>
 
@@ -65,9 +65,9 @@ const paths = [
 
   <section id="solutions" class="section shell path-section" aria-labelledby="paths-title">
     <div class="section-heading">
-      <span class="eyebrow">从喜欢开始</span>
-      <h2 id="paths-title">你的小车，<br />想先好一点在哪里？</h2>
-      <p>先看见想要的样子，再把每一个细节做实。手机上可以左右滑动。</p>
+      <span class="eyebrow">我们解决什么</span>
+      <h2 id="paths-title">先说清问题，<br />再给具体方案。</h2>
+      <p>每份方案都给出适用场景、清晰边界和可执行建议。手机上可以左右滑动查看。</p>
     </div>
 
     <div class="path-list">
@@ -87,20 +87,20 @@ const paths = [
     <div class="shell feature-grid">
       <div class="feature-image-wrap">
         <img src="/images/a10/city-departure.webp" width="1200" height="1600" alt="苔原绿零跑 A10 城市出发概念方案" loading="lazy" />
-        <div class="image-stamp">当前切口 · A10</div>
+        <div class="image-stamp">A10 专题</div>
       </div>
 
       <div class="feature-copy">
         <div class="feature-meta">
           <StatusBadge status="concept" />
-          <span>小车生活方案</span>
+          <span>A10 专题</span>
         </div>
-        <h2>从一台小车出发，<br />但不止研究这一台车。</h2>
-        <p>零跑 A10 是我们正在认真研究的第一台车。这里先展示生活想象，再把尺寸、产品和落地条件一项项补齐。</p>
+        <h2>零跑 A10：<br />城市日常轻改装提案。</h2>
+        <p>围绕通勤、日常采购和周末短途，先建立统一的外观与使用方向，再核对产品、尺寸和安装条件。</p>
         <ul class="feature-points">
-          <li><span>01</span> 先看整体气质，不急着加配件</li>
-          <li><span>02</span> 概念与实装分开标注</li>
-          <li><span>03</span> 给普通人留一个能靠近的入口</li>
+          <li><span>01</span> 保留小车轻巧、亲近城市的气质</li>
+          <li><span>02</span> 让颜色、附件和使用场景保持统一</li>
+          <li><span>03</span> 产品适配与实装状态清晰标注</li>
         </ul>
         <a class="text-link" href="/solutions/a10-city-departure/">查看这份方案 <span aria-hidden="true">→</span></a>
       </div>
@@ -109,16 +109,17 @@ const paths = [
 
   <section id="proof" class="section proof-section shell" aria-labelledby="proof-title">
     <div class="section-heading compact">
-      <span class="eyebrow">答案走到哪一步</span>
-      <h2 id="proof-title">好看可以先发生，<br />但可信要慢慢建立。</h2>
+      <span class="eyebrow">内容如何被验证</span>
+      <h2 id="proof-title">一眼看懂：<br />这是想法，还是结果。</h2>
+      <p>每篇内容只标记已经到达的状态。概念图负责表达方向，不等于产品已经适配或完成实装。</p>
     </div>
 
     <ol class="proof-flow" tabindex="0" aria-label="内容验证状态，可左右滑动">
-      <li class="is-current"><span>01</span><strong>概念方案</strong><small>表达方向，尚未证明可安装</small></li>
-      <li><span>02</span><strong>资料研究</strong><small>已有可靠资料，仍待实车验证</small></li>
-      <li><span>03</span><strong>实车测量</strong><small>关键尺寸已经现场确认</small></li>
-      <li><span>04</span><strong>已安装</strong><small>记录真实安装与使用过程</small></li>
-      <li><span>05</span><strong>长期验证</strong><small>经过持续使用和复盘</small></li>
+      <li class="is-current" aria-current="step"><span>01</span><strong>概念方案</strong><small>表达方向，尚未证明可安装</small></li>
+      <li><span>02</span><strong>资料研究</strong><small>核对产品参数、车型资料与规则边界</small></li>
+      <li><span>03</span><strong>实车测量</strong><small>关键尺寸与安装位置已经现场确认</small></li>
+      <li><span>04</span><strong>完成安装</strong><small>公开产品、花费和真实安装过程</small></li>
+      <li><span>05</span><strong>长期验证</strong><small>经过持续使用，再给出保留或淘汰结论</small></li>
     </ol>
   </section>
 
@@ -126,23 +127,28 @@ const paths = [
     <div class="shell note-grid">
       <div>
         <span class="eyebrow light">真实记录</span>
-        <h2>可以不完美，<br />但过程要是真的。</h2>
+        <h2>不仅告诉你买什么，<br />也说明为什么。</h2>
       </div>
       <div class="note-copy">
-        <p>采购过什么、装起来哪里不顺、为什么返工、用久了有什么变化，都会成为下一版方案的依据。</p>
-        <a class="coming-label" href="#proof">看看答案如何被验证 <span aria-hidden="true">→</span></a>
+        <p>实装内容公开产品型号、适用车型、关键尺寸、实际花费和使用时间；不合适、返工和被淘汰的东西也保留记录。</p>
+        <a class="coming-label" href="#a10">查看 A10 专题 <span aria-hidden="true">→</span></a>
       </div>
     </div>
   </section>
 
   <section id="about" class="section about-section shell">
     <div class="about-mark">
-      <img src="/brand/mark-black.png" width="220" height="116" alt="" loading="lazy" />
+      <img src="/brand/mark-color.png" width="512" height="269" alt="" loading="lazy" />
     </div>
     <div class="about-copy">
-      <span class="eyebrow">关于 H</span>
-      <h2>一个认真研究<br />小车生活的普通车主。</h2>
-      <p>不假装什么都有答案。先把问题看清楚，再用设计、产品和真实使用，一点点找答案。</p>
+      <span class="eyebrow">关于小车有解</span>
+      <h2>为普通车主整理<br />能看懂、能判断的方案。</h2>
+      <p>小车有解关注小车的外观、空间、用品和日常使用。我们把设计提案、产品研究、实车测量和真实安装分开标注，让每一份内容都更容易理解和判断。</p>
+      <div id="contact" class="contact-card">
+        <strong>联系我们</strong>
+        <p>欢迎发送选题建议、品牌合作、海外内容与车型信息。</p>
+        <a href="mailto:xiaocheyoujie@proton.me">xiaocheyoujie@proton.me</a>
+      </div>
     </div>
   </section>
 

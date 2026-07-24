@@ -1,28 +1,50 @@
 ---
-const links = [
-  { href: '/#solutions', label: '找方案' },
-  { href: '/#proof', label: '看验证' },
-  { href: '/#stories', label: '真实记录' },
-  { href: '/#a10', label: 'A10 专题' },
-];
+interface Props { lang?: 'zh' | 'en'; }
+const { lang = 'zh' } = Astro.props;
+const isEnglish = lang === 'en';
+const base = isEnglish ? '/en/' : '/';
+const links = isEnglish
+  ? [
+      { href: '/en/#solutions', label: 'Solutions' },
+      { href: '/en/#a10', label: 'A10 Focus' },
+      { href: '/en/#proof', label: 'How We Verify' },
+      { href: '/en/#contact', label: 'Contact' },
+    ]
+  : [
+      { href: '/#solutions', label: '找方案' },
+      { href: '/#a10', label: 'A10 专题' },
+      { href: '/#proof', label: '判断标准' },
+      { href: '/#contact', label: '联系我们' },
+    ];
+const aboutLabel = isEnglish ? 'About Us' : '关于我们';
 ---
 
 <header class="site-header">
   <div class="header-inner shell">
-    <a class="brand-link" href="/" aria-label="小车有解首页">
-      <img src="/brand/logo-color.png" width="150" height="73" alt="小车有解，认真研究小车，用心设计生活" />
+    <a class="brand-link" href={base} aria-label={isEnglish ? 'Small Car, Solved home' : '小车有解首页'}>
+      <img class="brand-mark" src="/favicon.png?v=2" width="44" height="44" alt="" />
+      <span class="brand-copy">
+        <strong class="brand-name">小车有解</strong>
+        <small>{isEnglish ? 'SMALL-CAR LIFE DESIGN' : '小车生活设计'}</small>
+      </span>
     </a>
 
-    <nav class="desktop-nav" aria-label="主导航">
+    <nav class="desktop-nav" aria-label={isEnglish ? 'Main navigation' : '主导航'}>
       {links.map((link) => <a href={link.href}>{link.label}</a>)}
-      <a class="nav-about" href="/#about">关于 H</a>
+      <a class="nav-about" href={`${base}#about`}>{aboutLabel}</a>
+      <a class="language-switch" href={isEnglish ? '/' : '/en/'} lang={isEnglish ? 'zh-CN' : 'en'}>{isEnglish ? '中文' : 'EN'}</a>
     </nav>
 
     <details class="mobile-menu">
-      <summary aria-label="打开导航"><span></span><span></span></summary>
-      <nav aria-label="手机导航">
+      <summary
+        aria-label={isEnglish ? 'Open navigation' : '打开导航'}
+        data-open-label={isEnglish ? 'Open navigation' : '打开导航'}
+        data-close-label={isEnglish ? 'Close navigation' : '关闭导航'}
+      ><span></span><span></span></summary>
+      <nav aria-label={isEnglish ? 'Mobile navigation' : '手机导航'}>
         {links.map((link) => <a href={link.href}>{link.label}</a>)}
-        <a href="/#about">关于 H</a>
+        <a href={`${base}#about`}>{aboutLabel}</a>
+        <a href={isEnglish ? '/' : '/en/'} lang={isEnglish ? 'zh-CN' : 'en'}>{isEnglish ? '中文' : 'English'}</a>
       </nav>
     </details>
   </div>
@@ -31,7 +53,7 @@ const links = [
 <script>
   const menu = document.querySelector<HTMLDetailsElement>('.mobile-menu');
   const summary = menu?.querySelector('summary');
-  const syncMenuLabel = () => summary?.setAttribute('aria-label', menu?.open ? '关闭导航' : '打开导航');
+  const syncMenuLabel = () => summary?.setAttribute('aria-label', menu?.open ? summary.dataset.closeLabel ?? '关闭导航' : summary.dataset.openLabel ?? '打开导航');
 
   menu?.addEventListener('toggle', syncMenuLabel);
   menu?.querySelectorAll('a').forEach((link) => {

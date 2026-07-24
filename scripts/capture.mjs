@@ -8,9 +8,11 @@ await mkdir(outDir, { recursive: true });
 
 const browser = await chromium.launch({ executablePath, headless: true });
 const cases = [
-  { name: 'home-mobile-390x844', width: 390, height: 844, fullPage: false },
-  { name: 'home-mobile-full', width: 390, height: 844, fullPage: true },
-  { name: 'home-desktop-1440x1000', width: 1440, height: 1000, fullPage: false },
+  { name: 'home-mobile-390x844', url: '/', width: 390, height: 844, fullPage: false },
+  { name: 'home-mobile-full', url: '/', width: 390, height: 844, fullPage: true },
+  { name: 'home-desktop-1440x1000', url: '/', width: 1440, height: 1000, fullPage: false },
+  { name: 'home-en-mobile-390x844', url: '/en/', width: 390, height: 844, fullPage: false },
+  { name: 'home-en-desktop-1440x1000', url: '/en/', width: 1440, height: 1000, fullPage: false },
 ];
 
 for (const item of cases) {
@@ -20,7 +22,7 @@ for (const item of cases) {
     if (message.type() === 'error') errors.push(message.text());
   });
   page.on('pageerror', (error) => errors.push(error.message));
-  await page.goto('http://127.0.0.1:4321/', { waitUntil: 'networkidle' });
+  await page.goto(`http://127.0.0.1:4321${item.url}`, { waitUntil: 'networkidle' });
   await page.screenshot({ path: resolve(outDir, `${item.name}.png`), fullPage: item.fullPage });
   const metrics = await page.evaluate(() => ({
     viewportWidth: window.innerWidth,

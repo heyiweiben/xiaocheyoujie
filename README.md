@@ -2,7 +2,7 @@
 
 面向女性用户、手机端优先的小车生活设计品牌网站。
 
-当前为**本地原型阶段**：未推送 GitHub、未创建 Cloudflare 项目、未绑定正式域名。
+当前代码已推送至 GitHub，并通过 Cloudflare Workers 的 Git 集成构建静态站点；正式域名绑定单独管理。
 
 ## 技术栈
 
@@ -10,7 +10,7 @@
 - TypeScript
 - Astro Content Collections
 - 原生 CSS（品牌 token、响应式布局与无障碍状态）
-- 目标部署：Cloudflare Pages 静态站点
+- 部署：Cloudflare Workers Static Assets（Git 集成）
 
 ## 产品原则
 
@@ -19,6 +19,10 @@
 - 手机端先完成，再向桌面端扩展。
 - A10 是当前内容切口，不是全站永久视觉母题。
 - 概念、资料研究、实车测量、已安装和长期验证必须明确标注。
+- 对外页面只保留客户需要看到的品牌、方案、边界和联系信息，不展示内部协作或推理话术。
+- 中文为默认入口，英文版位于 `/en/`，覆盖零跑 A10 海外市场的车型、产品适配与法规差异。
+
+公开联系邮箱：`xiaocheyoujie@proton.me`
 
 ## 本地运行
 

@@ -1,9 +1,10 @@
 ---
 interface Props {
   status: 'concept' | 'researched' | 'measured' | 'installed' | 'verified';
+  lang?: 'zh' | 'en';
 }
 
-const labels = {
+const zhLabels = {
   concept: '概念方案',
   researched: '资料研究',
   measured: '实车测量',
@@ -11,7 +12,16 @@ const labels = {
   verified: '长期验证',
 };
 
-const { status } = Astro.props;
+const enLabels = {
+  concept: 'Concept',
+  researched: 'Researched',
+  measured: 'Vehicle measured',
+  installed: 'Installed',
+  verified: 'Long-term verified',
+};
+
+const { status, lang = 'zh' } = Astro.props;
+const labels = lang === 'en' ? enLabels : zhLabels;
 ---
 
 <span class:list={['status-badge', `status-${status}`]}>{labels[status]}</span>

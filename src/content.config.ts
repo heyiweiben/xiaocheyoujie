@@ -14,8 +14,6 @@ const solutions = defineCollection({
     imageAlt: z.string(),
     publishedAt: z.coerce.date(),
     updatedAt: z.coerce.date(),
-    prototype: z.boolean().default(false),
-    requiresUserConfirmation: z.boolean().default(true),
   }),
 });
 
