@@ -55,6 +55,12 @@ const mediaRatios = await page.locator('.published-solution-card img').evaluateA
 for (const media of mediaRatios) {
   if (Math.abs(media.natural - media.rendered) > 0.015) throw new Error(`Published artwork ratio changed: ${JSON.stringify(media)}`);
 }
+if (await page.locator('#a10, #proof').count()) throw new Error('Retired A10 focus or verification-standard homepage section is still visible');
+const retiredChineseLabels = await page.locator('header').innerText();
+for (const label of ['A10 专题', '判断标准']) {
+  if (retiredChineseLabels.includes(label)) throw new Error(`Retired Chinese navigation label remains: ${label}`);
+}
+if ((await page.locator('main').innerText()).includes('查看 A10 专题')) throw new Error('Retired A10-focus CTA remains on Chinese homepage');
 const homeText = await page.locator('main').innerText();
 for (const forbidden of ['网站内容结构样例', '本地网站原型', '公开文案尚未经过用户最终确认', '获得证据后', '第一份内容先解决']) {
   if (homeText.includes(forbidden)) throw new Error(`Prototype wording leaked to homepage: ${forbidden}`);
@@ -83,15 +89,6 @@ if (visualSystem.moodAnimation !== 'none') throw new Error('Decorative marquee s
 if (new Set(visualSystem.pathBackgrounds).size !== 1 || new Set(visualSystem.pathRadii).size !== 1) {
   throw new Error(`Solution cards do not share one visual system: ${JSON.stringify(visualSystem)}`);
 }
-const proofLayout = await page.locator('.proof-flow').evaluate((flow) => ({
-  scrollWidth: flow.scrollWidth,
-  clientWidth: flow.clientWidth,
-  itemHeights: [...flow.children].map((item) => item.getBoundingClientRect().height),
-  itemAlignments: [...flow.children].map((item) => getComputedStyle(item).alignContent),
-}));
-if (proofLayout.scrollWidth !== proofLayout.clientWidth || Math.max(...proofLayout.itemHeights) > 145 || proofLayout.itemAlignments.includes('end')) {
-  throw new Error(`Validation steps still resemble empty image cards: ${JSON.stringify(proofLayout)}`);
-}
 
 const homeA11y = await new AxeBuilder({ page }).analyze();
 const homeBlocking = homeA11y.violations.filter((item) => ['serious', 'critical'].includes(item.impact ?? ''));
@@ -115,13 +112,6 @@ await page.locator('.mobile-menu summary').click();
 await page.keyboard.press('Escape');
 if (await page.locator('.mobile-menu').evaluate((menu) => menu.hasAttribute('open'))) throw new Error('Mobile navigation did not close on Escape');
 
-const feature = page.locator('.feature-image-wrap');
-await feature.scrollIntoViewIfNeeded();
-await page.waitForFunction(() => {
-  const image = document.querySelector('.feature-image-wrap img');
-  return image instanceof HTMLImageElement && image.complete && image.naturalWidth > 0;
-});
-await page.screenshot({ path: resolve(outDir, 'home-mobile-feature.png') });
 
 const sample = await page.goto(`${baseURL}/solutions/a10-city-departure/`, { waitUntil: 'networkidle' });
 if (!sample?.ok()) throw new Error(`Sample page returned ${sample?.status()}`);
@@ -149,6 +139,11 @@ if ((await page.locator('h1').innerText()).replace(/\s+/g, ' ').trim() !== 'Smal
 if (!(await page.locator('a[href="mailto:xiaocheyoujie@proton.me"]').count())) throw new Error('English contact email missing');
 if (!(await page.locator('a[href="/"]').filter({ hasText: '中文' }).count())) throw new Error('Chinese language return missing');
 if (await page.locator('.published-solution-card').count() !== 6) throw new Error('English published-solution set is incomplete');
+if (await page.locator('#a10, #proof').count()) throw new Error('Retired English A10 focus or verification-standard section remains');
+const retiredEnglishText = `${await page.locator('header').innerText()} ${await page.locator('main').innerText()}`;
+for (const label of ['A10 Focus', 'How We Verify', 'Explore the A10 focus']) {
+  if (retiredEnglishText.includes(label)) throw new Error(`Retired English label remains: ${label}`);
+}
 const englishHeroAlt = await page.locator('.hero-photo').getAttribute('alt');
 for (const phrase of ['electric city car', 'lock icon', 'battery status']) {
   if (!englishHeroAlt?.includes(phrase)) throw new Error(`English hero accessibility description missing: ${phrase}`);
