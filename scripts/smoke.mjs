@@ -38,6 +38,13 @@ const publishedText = await publishedCards.allInnerTexts();
 for (const title of ['魔教座驾', '敢去远方', '车顶箱和行李篮', '旅行车味', '有点心动', '上世纪的旅行车']) {
   if (!publishedText.some((text) => text.includes(title))) throw new Error(`Published solution missing: ${title}`);
 }
+const publishedHrefs = await publishedCards.evaluateAll((cards) => cards.map((card) => ({ href: card.href, target: card.getAttribute('target'), rel: card.getAttribute('rel') })));
+for (const link of publishedHrefs) {
+  const url = new URL(link.href);
+  if (url.hostname !== 'www.xiaohongshu.com' || !url.pathname.startsWith('/explore/')) throw new Error(`Invalid published Xiaohongshu link: ${link.href}`);
+  if (!url.searchParams.get('xsec_token') || url.searchParams.get('xsec_source') !== 'pc_search') throw new Error(`Xiaohongshu validation parameters missing: ${link.href}`);
+  if (link.target !== '_blank' || link.rel !== 'noopener') throw new Error(`External-link behavior is not configured for Xiaohongshu: ${JSON.stringify(link)}`);
+}
 for (const card of await publishedCards.all()) await card.scrollIntoViewIfNeeded();
 await page.waitForFunction(() => [...document.querySelectorAll('.published-solution-card img')].every((image) => image.complete && image.naturalWidth > 0));
 const mediaRatios = await page.locator('.published-solution-card img').evaluateAll((images) => images.map((image) => ({
