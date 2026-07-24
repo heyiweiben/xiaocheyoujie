@@ -27,6 +27,28 @@ for (const forbidden of ['网站内容结构样例', '本地网站原型', '公�
 }
 if (!(await page.locator('a[href="mailto:xiaocheyoujie@proton.me"]').count())) throw new Error('Public contact email missing');
 if (!(await page.locator('a[href="/en/"]').count())) throw new Error('English language entry missing');
+if (await page.locator('.about-mark img').count()) throw new Error('Distorted standalone brand mark is still used in About section');
+if (!(await page.locator('.about-brand-word').count())) throw new Error('Typography-based About brand panel missing');
+
+const visualSystem = await page.evaluate(() => {
+  const style = (selector) => getComputedStyle(document.querySelector(selector));
+  return {
+    bodyFont: style('body').fontFamily,
+    h1Font: style('h1').fontFamily,
+    h1AccentFont: style('h1 em').fontFamily,
+    h2Font: style('h2').fontFamily,
+    moodAnimation: style('.mood-track').animationName,
+    pathBackgrounds: [...document.querySelectorAll('.path-card')].map((card) => getComputedStyle(card).backgroundColor),
+    pathRadii: [...document.querySelectorAll('.path-card')].map((card) => getComputedStyle(card).borderRadius),
+  };
+});
+if (new Set([visualSystem.bodyFont, visualSystem.h1Font, visualSystem.h1AccentFont, visualSystem.h2Font]).size !== 1) {
+  throw new Error(`Typography system is not unified: ${JSON.stringify(visualSystem)}`);
+}
+if (visualSystem.moodAnimation !== 'none') throw new Error('Decorative marquee still makes the page visually noisy');
+if (new Set(visualSystem.pathBackgrounds).size !== 1 || new Set(visualSystem.pathRadii).size !== 1) {
+  throw new Error(`Solution cards do not share one visual system: ${JSON.stringify(visualSystem)}`);
+}
 
 const homeA11y = await new AxeBuilder({ page }).analyze();
 const homeBlocking = homeA11y.violations.filter((item) => ['serious', 'critical'].includes(item.impact ?? ''));
