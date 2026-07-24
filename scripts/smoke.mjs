@@ -138,7 +138,7 @@ await page.screenshot({ path: resolve(outDir, 'sample-mobile-390x844.png') });
 const english = await page.goto(`${baseURL}/en/`, { waitUntil: 'networkidle' });
 if (!english?.ok()) throw new Error(`English home returned ${english?.status()}`);
 if ((await page.locator('html').getAttribute('lang')) !== 'en') throw new Error('English document lang missing');
-if (!(await page.locator('h1').textContent())?.includes('Small Car')) throw new Error('English home title missing');
+if ((await page.locator('h1').innerText()).replace(/\s+/g, ' ').trim() !== 'Small Car, Solved. Better Life, Designed.') throw new Error('Approved English brand line is missing');
 if (!(await page.locator('a[href="mailto:xiaocheyoujie@proton.me"]').count())) throw new Error('English contact email missing');
 if (!(await page.locator('a[href="/"]').filter({ hasText: '中文' }).count())) throw new Error('Chinese language return missing');
 if (await page.locator('.published-solution-card').count() !== 6) throw new Error('English published-solution set is incomplete');
