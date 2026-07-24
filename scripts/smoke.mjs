@@ -61,6 +61,13 @@ for (const label of ['A10 专题', '判断标准']) {
   if (retiredChineseLabels.includes(label)) throw new Error(`Retired Chinese navigation label remains: ${label}`);
 }
 if ((await page.locator('main').innerText()).includes('查看 A10 专题')) throw new Error('Retired A10-focus CTA remains on Chinese homepage');
+const brandNote = page.locator('.brand-note-card');
+if (await brandNote.count() !== 1) throw new Error('Compact brand story card is missing');
+const brandNoteText = await brandNote.innerText();
+if (!brandNoteText.includes('认真研究小车') || !brandNoteText.includes('用心设计生活') || brandNoteText.includes('真实记录')) throw new Error('Chinese brand story copy is incorrect');
+await page.waitForFunction(() => { const image = document.querySelector('.brand-note-media img'); return image?.complete && image.naturalWidth === 900 && image.naturalHeight === 675; });
+const brandNoteStyle = await brandNote.evaluate((card) => ({ display: getComputedStyle(card).display, background: getComputedStyle(card).backgroundColor }));
+if (brandNoteStyle.display !== 'grid' || brandNoteStyle.background === 'rgba(0, 0, 0, 0)') throw new Error(`Brand story lacks structured colour treatment: ${JSON.stringify(brandNoteStyle)}`);
 const homeText = await page.locator('main').innerText();
 for (const forbidden of ['网站内容结构样例', '本地网站原型', '公开文案尚未经过用户最终确认', '获得证据后', '第一份内容先解决']) {
   if (homeText.includes(forbidden)) throw new Error(`Prototype wording leaked to homepage: ${forbidden}`);
@@ -144,6 +151,8 @@ const retiredEnglishText = `${await page.locator('header').innerText()} ${await 
 for (const label of ['A10 Focus', 'How We Verify', 'Explore the A10 focus']) {
   if (retiredEnglishText.includes(label)) throw new Error(`Retired English label remains: ${label}`);
 }
+const englishBrandNote = (await page.locator('.brand-note-card').innerText()).replace(/\s+/g, ' ');
+if (!englishBrandNote.includes('Small cars deserve thoughtful design.') || englishBrandNote.includes('Real ownership notes')) throw new Error('English brand story copy is incorrect');
 const englishHeroAlt = await page.locator('.hero-photo').getAttribute('alt');
 for (const phrase of ['electric city car', 'lock icon', 'battery status']) {
   if (!englishHeroAlt?.includes(phrase)) throw new Error(`English hero accessibility description missing: ${phrase}`);

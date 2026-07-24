@@ -19,6 +19,7 @@
     --muted: #686a66;
     --coral: #e95c43;
     --coral-dark: #9f3526;
+    --yellow: #f2c75c;
     --teal: #35645d;
     --teal-dark: #284e48;
     --line: #dedbd3;
@@ -127,7 +128,7 @@
 
   .section { padding-block: 76px; }
   .section-heading { display: grid; gap: 16px; margin-bottom: 32px; }
-  .section-heading h2, .feature-copy h2, .note-grid h2, .about-copy h2 {
+  .section-heading h2, .feature-copy h2, .brand-note-copy h2, .about-copy h2 {
     font-family: inherit; font-size: clamp(2rem, 8vw, 3.25rem); font-weight: 700;
     line-height: 1.14; letter-spacing: -.045em; text-wrap: balance;
   }
@@ -187,12 +188,14 @@
   .proof-flow .is-current > span { color: rgba(255,255,255,.78); }
   .proof-flow .is-current strong { color: #ffb3a5; }
 
-  .note-section { background: var(--surface-muted); border-block: 1px solid var(--line); }
-  .note-grid { display: grid; gap: 32px; padding: 30px; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-card); box-shadow: var(--shadow-card); }
-  .eyebrow.light { color: var(--teal); }
-  .note-copy { align-self: end; }
-  .note-copy p { max-width: 36rem; color: var(--muted); font-size: 1rem; }
-  .coming-label { min-height: 44px; display: inline-flex; align-items: center; margin-top: 22px; padding: 0 15px; color: white; background: var(--ink); border-radius: 12px; font-size: .78rem; font-weight: 700; }
+  .brand-note-section { background: var(--surface-muted); border-block: 1px solid var(--line); }
+  .brand-note-card { display: grid; overflow: hidden; color: white; background: var(--teal-dark); border-radius: var(--radius-card); box-shadow: var(--shadow-card); }
+  .brand-note-media { aspect-ratio: 4 / 3; overflow: hidden; }
+  .brand-note-media img { width: 100%; height: 100%; object-fit: cover; }
+  .brand-note-copy { display: grid; align-content: center; gap: 16px; padding: 30px; }
+  .brand-note-kicker { width: fit-content; padding: 7px 11px; color: var(--ink); background: var(--yellow); border-radius: 999px; font-size: .72rem; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; }
+  .brand-note-copy h2 { color: white; font-size: clamp(2rem, 9vw, 3.5rem); }
+  .brand-note-copy p { max-width: 34rem; color: rgba(255,255,255,.78); font-size: 1rem; line-height: 1.78; }
 
   .about-section { display: grid; gap: 30px; }
   .about-mark {
@@ -239,7 +242,7 @@
 :lang(en) .hero h1 em,
 :lang(en) .section-heading h2,
 :lang(en) .feature-copy h2,
-:lang(en) .note-grid h2,
+:lang(en) .brand-note-copy h2,
 :lang(en) .about-copy h2 { font-family: inherit; letter-spacing: -.045em; }
 :lang(en) .hero h1 { max-width: 11ch; }
 :lang(en) .published-solution-copy strong { font-size: 1.18rem; }
@@ -281,7 +284,9 @@
   .proof-flow li:last-child { border-right: 0; }
   .proof-flow .is-current { box-shadow: inset 0 4px 0 var(--coral); }
 
-  .note-grid { grid-template-columns: 1.05fr .95fr; gap: 64px; padding: 48px; }
+  .brand-note-card { grid-template-columns: minmax(0, .92fr) minmax(0, 1.08fr); min-height: 390px; }
+  .brand-note-media { aspect-ratio: auto; min-height: 390px; }
+  .brand-note-copy { padding: 54px; }
   .about-section { grid-template-columns: .78fr 1.22fr; gap: 72px; }
   .about-mark { min-height: 360px; }
 
