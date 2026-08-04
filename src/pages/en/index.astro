@@ -6,6 +6,13 @@ import SiteFooter from '../../components/SiteFooter.astro';
 
 const publishedSolutions = [
   {
+    title: 'Chongqing Night Drive',
+    text: 'Acid lime, electric violet and holographic silver turn the LEAPMOTOR A10 into a future-facing night concept.',
+    image: '/images/solutions/a10-chongqing-night/01.webp',
+    href: '/en/solutions/a10-chongqing-night/',
+    source: 'website',
+  },
+  {
     title: 'A10 in “Dark Iron” Wuxia Style',
     text: 'A cinematic concept built from dark iron grey, vermilion accents and ink-inspired graphics.',
     image: '/images/solutions/a10-night-wuxia.webp',
@@ -78,15 +85,15 @@ const publishedSolutions = [
     <div class="section-heading">
       <span class="eyebrow">Published concepts</span>
       <h2 id="paths-title">Real questions,<br />designed into small-car ideas.</h2>
-      <p>Six A10 concepts already published by Small Car, Solved on Xiaohongshu. Open a card to view the original post.</p>
+      <p>Seven A10 concepts: six published on Xiaohongshu and one premiering here. Open a card for the full story.</p>
     </div>
 
     <div class="published-solutions-grid" tabindex="0" aria-label="Published concepts; swipe horizontally">
     {publishedSolutions.map((solution) => (
-      <a class="published-solution-card" href={solution.href} target="_blank" rel="noopener">
+      <a class="published-solution-card" data-source={solution.source ?? 'xiaohongshu'} href={solution.href} target={solution.source === 'website' ? undefined : '_blank'} rel={solution.source === 'website' ? undefined : 'noopener'}>
         <img src={solution.image} alt={solution.title} width="1086" height="1448" loading="lazy" />
         <span class="published-solution-copy">
-          <small>Published on Xiaohongshu · Concept</small>
+          <small>{solution.source === 'website' ? 'Website premiere · Concept visual' : 'Published on Xiaohongshu · Concept'}</small>
           <strong>{solution.title}</strong>
           <span>{solution.text}</span>
         </span>

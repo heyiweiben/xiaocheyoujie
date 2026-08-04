@@ -12,6 +12,7 @@ const solutions = defineCollection({
     status: z.enum(['concept', 'researched', 'measured', 'installed', 'verified']),
     image: z.string(),
     imageAlt: z.string(),
+    alternatePath: z.string().optional(),
     publishedAt: z.coerce.date(),
     updatedAt: z.coerce.date(),
   }),

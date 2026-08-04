@@ -17,7 +17,7 @@ const { Content } = await render(entry);
 const title = `${entry.data.title}｜小车有解`;
 ---
 
-<BaseLayout title={title} description={entry.data.summary} image={entry.data.image} alternatePath="/en/solutions/a10-city-departure/">
+<BaseLayout title={title} description={entry.data.summary} image={entry.data.image} alternatePath={entry.data.alternatePath}>
   <SiteHeader slot="header" />
   <article class="article-shell">
     <a class="article-back" href="/">← 返回首页</a>

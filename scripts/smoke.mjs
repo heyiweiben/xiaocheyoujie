@@ -4,7 +4,7 @@ import { mkdir } from 'node:fs/promises';
 import { resolve } from 'node:path';
 
 const executablePath = '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';
-const baseURL = 'http://127.0.0.1:4321';
+const baseURL = process.env.BASE_URL ?? 'http://127.0.0.1:4321';
 const outDir = resolve('artifacts');
 await mkdir(outDir, { recursive: true });
 
@@ -33,12 +33,15 @@ const headerLogo = page.locator('.site-header .brand-lockup');
 if (await headerLogo.getAttribute('src') !== '/brand/xiaocheyoujie-horizontal-white-2048.png') throw new Error('Official horizontal brand lockup missing from header');
 if (await page.locator('.site-header .brand-mark, .site-header .brand-copy').count()) throw new Error('Hand-built header brand remains instead of official lockup');
 const publishedCards = page.locator('.published-solution-card');
-if (await publishedCards.count() !== 6) throw new Error(`Expected 6 published Xiaohongshu solutions, got ${await publishedCards.count()}`);
+if (await publishedCards.count() !== 7) throw new Error(`Expected 7 website solutions, got ${await publishedCards.count()}`);
 const publishedText = await publishedCards.allInnerTexts();
-for (const title of ['魔教座驾', '敢去远方', '车顶箱和行李篮', '旅行车味', '有点心动', '上世纪的旅行车']) {
+for (const title of ['重庆夜行', '魔教座驾', '敢去远方', '车顶箱和行李篮', '旅行车味', '有点心动', '上世纪的旅行车']) {
   if (!publishedText.some((text) => text.includes(title))) throw new Error(`Published solution missing: ${title}`);
 }
-const publishedHrefs = await publishedCards.evaluateAll((cards) => cards.map((card) => ({ href: card.href, target: card.getAttribute('target'), rel: card.getAttribute('rel') })));
+const websiteCard = page.locator('.published-solution-card[data-source="website"][href="/solutions/a10-chongqing-night/"]');
+if (await websiteCard.count() !== 1) throw new Error('Chongqing Night website-first card is missing');
+const publishedHrefs = await page.locator('.published-solution-card[data-source="xiaohongshu"]').evaluateAll((cards) => cards.map((card) => ({ href: card.href, target: card.getAttribute('target'), rel: card.getAttribute('rel') })));
+if (publishedHrefs.length !== 6) throw new Error(`Expected 6 Xiaohongshu source cards, got ${publishedHrefs.length}`);
 for (const link of publishedHrefs) {
   const url = new URL(link.href);
   if (url.hostname !== 'www.xiaohongshu.com' || !url.pathname.startsWith('/explore/')) throw new Error(`Invalid published Xiaohongshu link: ${link.href}`);
@@ -139,13 +142,33 @@ await page.waitForFunction(() => {
 });
 await page.screenshot({ path: resolve(outDir, 'sample-mobile-390x844.png') });
 
+const chongqingNight = await page.goto(`${baseURL}/solutions/a10-chongqing-night/`, { waitUntil: 'networkidle' });
+if (!chongqingNight?.ok()) throw new Error(`Chongqing Night returned ${chongqingNight?.status()}`);
+if (!(await page.locator('h1').textContent())?.includes('重庆夜行')) throw new Error('Chongqing Night title missing');
+const chongqingText = await page.locator('.article-shell').innerText();
+for (const phrase of ['想当黄毛了', 'AI 生成概念视觉', '不是官方配色', '不是量产改装方案']) {
+  if (!chongqingText.includes(phrase)) throw new Error(`Chongqing Night boundary missing: ${phrase}`);
+}
+if (await page.locator('.article-hero, .concept-gallery img').count() !== 5) throw new Error('Chongqing Night page must contain five images');
+if (!(await page.locator('link[rel="alternate"][hreflang="en"]').getAttribute('href'))?.endsWith('/en/solutions/a10-chongqing-night/')) throw new Error('Chongqing Night English alternate is incorrect');
+if (!(await page.locator('link[rel="alternate"][hreflang="zh-CN"]').getAttribute('href'))?.endsWith('/solutions/a10-chongqing-night/')) throw new Error('Chongqing Night Chinese self alternate is missing');
+if (!(await page.locator('link[rel="alternate"][hreflang="x-default"]').getAttribute('href'))?.endsWith('/solutions/a10-chongqing-night/')) throw new Error('Chongqing Night x-default is incorrect');
+for (const image of await page.locator('.article-hero, .concept-gallery img').all()) await image.scrollIntoViewIfNeeded();
+await page.waitForFunction(() => [...document.querySelectorAll('.article-hero, .concept-gallery img')].every((image) => image.complete && image.naturalWidth > 0));
+const conceptRatios = await page.locator('.article-hero, .concept-gallery img').evaluateAll((images) => images.map((image) => ({ natural: image.naturalWidth / image.naturalHeight, rendered: image.getBoundingClientRect().width / image.getBoundingClientRect().height })));
+for (const media of conceptRatios) if (Math.abs(media.natural - media.rendered) > 0.015) throw new Error(`Chongqing Night artwork ratio changed: ${JSON.stringify(media)}`);
+const chongqingA11y = await new AxeBuilder({ page }).analyze();
+const chongqingBlocking = chongqingA11y.violations.filter((item) => ['serious', 'critical'].includes(item.impact ?? ''));
+if (chongqingBlocking.length) throw new Error(`Chongqing Night accessibility: ${chongqingBlocking.map((item) => item.id).join(', ')}`);
+
 const english = await page.goto(`${baseURL}/en/`, { waitUntil: 'networkidle' });
 if (!english?.ok()) throw new Error(`English home returned ${english?.status()}`);
 if ((await page.locator('html').getAttribute('lang')) !== 'en') throw new Error('English document lang missing');
 if ((await page.locator('h1').innerText()).replace(/\s+/g, ' ').trim() !== 'Small Car, Solved. Better Life, Designed.') throw new Error('Approved English brand line is missing');
 if (!(await page.locator('a[href="mailto:xiaocheyoujie@proton.me"]').count())) throw new Error('English contact email missing');
 if (!(await page.locator('a[href="/"]').filter({ hasText: '中文' }).count())) throw new Error('Chinese language return missing');
-if (await page.locator('.published-solution-card').count() !== 6) throw new Error('English published-solution set is incomplete');
+if (await page.locator('.published-solution-card').count() !== 7) throw new Error('English website-solution set is incomplete');
+if (await page.locator('.published-solution-card[data-source="website"][href="/en/solutions/a10-chongqing-night/"]').count() !== 1) throw new Error('English Chongqing Night card is missing');
 if (await page.locator('#a10, #proof').count()) throw new Error('Retired English A10 focus or verification-standard section remains');
 const retiredEnglishText = `${await page.locator('header').innerText()} ${await page.locator('main').innerText()}`;
 for (const label of ['A10 Focus', 'How We Verify', 'Explore the A10 focus']) {
@@ -170,6 +193,22 @@ if (!englishArticleText.includes('international markets')) throw new Error('Engl
 const englishA10A11y = await new AxeBuilder({ page }).analyze();
 const englishA10Blocking = englishA10A11y.violations.filter((item) => ['serious', 'critical'].includes(item.impact ?? ''));
 if (englishA10Blocking.length) throw new Error(`English A10 accessibility: ${englishA10Blocking.map((item) => item.id).join(', ')}`);
+
+const englishChongqing = await page.goto(`${baseURL}/en/solutions/a10-chongqing-night/`, { waitUntil: 'networkidle' });
+if (!englishChongqing?.ok()) throw new Error(`English Chongqing Night returned ${englishChongqing?.status()}`);
+if (!(await page.locator('h1').textContent())?.includes('Chongqing Night Drive')) throw new Error('English Chongqing Night title missing');
+if ((await page.locator('.skip-link').textContent())?.trim() !== 'Skip to main content') throw new Error('English skip link is not localized');
+const englishChongqingText = await page.locator('.article-shell').innerText();
+for (const phrase of ['Going loud for the night', 'AI-generated concept visual', 'not an official colourway', 'not a production modification package']) {
+  if (!englishChongqingText.includes(phrase)) throw new Error(`English Chongqing Night boundary missing: ${phrase}`);
+}
+if (await page.locator('.article-hero, .concept-gallery img').count() !== 5) throw new Error('English Chongqing Night page must contain five images');
+if (!(await page.locator('link[rel="alternate"][hreflang="zh-CN"]').getAttribute('href'))?.endsWith('/solutions/a10-chongqing-night/')) throw new Error('English Chongqing Night Chinese alternate is incorrect');
+if (!(await page.locator('link[rel="alternate"][hreflang="en"]').getAttribute('href'))?.endsWith('/en/solutions/a10-chongqing-night/')) throw new Error('English Chongqing Night self alternate is missing');
+if (!(await page.locator('link[rel="alternate"][hreflang="x-default"]').getAttribute('href'))?.endsWith('/solutions/a10-chongqing-night/')) throw new Error('English Chongqing Night x-default is incorrect');
+const englishChongqingA11y = await new AxeBuilder({ page }).analyze();
+const englishChongqingBlocking = englishChongqingA11y.violations.filter((item) => ['serious', 'critical'].includes(item.impact ?? ''));
+if (englishChongqingBlocking.length) throw new Error(`English Chongqing Night accessibility: ${englishChongqingBlocking.map((item) => item.id).join(', ')}`);
 
 if (errors.length) throw new Error(`Browser errors: ${errors.join(' | ')}`);
 console.log(JSON.stringify({

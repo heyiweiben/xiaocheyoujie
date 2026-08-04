@@ -6,6 +6,13 @@ import SiteFooter from '../components/SiteFooter.astro';
 
 const publishedSolutions = [
   {
+    title: '重庆夜行',
+    text: '酸橙绿、电紫与全息银，把零跑A10推进山城夜色里的未来概念。',
+    image: '/images/solutions/a10-chongqing-night/01.webp',
+    href: '/solutions/a10-chongqing-night/',
+    source: 'website',
+  },
+  {
     title: 'A10 披上玄铁，像不像魔教座驾？',
     text: '玄铁灰、朱砂红与水墨纹样组成一套重武侠整车概念。',
     image: '/images/solutions/a10-night-wuxia.webp',
@@ -79,15 +86,15 @@ const publishedSolutions = [
     <div class="section-heading">
       <span class="eyebrow">已经发布的方案</span>
       <h2 id="paths-title">从真实问题出发，<br />把小车生活做成方案。</h2>
-      <p>这里汇集已经在“小车有解”小红书公开发布的六套 A10 概念方案。点击卡片可查看原笔记。</p>
+      <p>这里收录七套 A10 概念方案：六套来自“小车有解”小红书，一套在网站首发。点击卡片查看完整内容。</p>
     </div>
 
     <div class="published-solutions-grid" tabindex="0" aria-label="已发布方案，可左右滑动">
       {publishedSolutions.map((solution) => (
-        <a class="published-solution-card" href={solution.href} target="_blank" rel="noopener">
+        <a class="published-solution-card" data-source={solution.source ?? 'xiaohongshu'} href={solution.href} target={solution.source === 'website' ? undefined : '_blank'} rel={solution.source === 'website' ? undefined : 'noopener'}>
           <img src={solution.image} alt={solution.title} width="1086" height="1448" loading="lazy" />
           <span class="published-solution-copy">
-            <small>小红书已发布 · 概念方案</small>
+            <small>{solution.source === 'website' ? '网站首发 · 概念视觉' : '小红书已发布 · 概念方案'}</small>
             <strong>{solution.title}</strong>
             <span>{solution.text}</span>
           </span>

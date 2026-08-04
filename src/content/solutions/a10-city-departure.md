@@ -6,6 +6,7 @@ vehicle: "零跑 A10"
 status: concept
 image: "/images/a10/city-departure.webp"
 imageAlt: "苔原绿零跑 A10 停在城市街道旁的概念方案图"
+alternatePath: "/en/solutions/a10-city-departure/"
 publishedAt: 2026-07-23
 updatedAt: 2026-07-24
 ---
